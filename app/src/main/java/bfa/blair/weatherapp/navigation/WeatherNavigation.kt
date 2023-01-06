@@ -1,10 +1,13 @@
 package bfa.blair.weatherapp.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import bfa.blair.weatherapp.screens.WeatherSplashScreen
+import bfa.blair.weatherapp.screens.main.MainScreen
+import bfa.blair.weatherapp.screens.main.MainViewModel
 
 @Composable
 fun WeatherNavigation() {
@@ -15,7 +18,8 @@ fun WeatherNavigation() {
             WeatherSplashScreen(navController = navController)
         }
         composable(WeatherScreens.MainScreen.name) {
-            MainScreen(navController = navController)
+            val mainViewModel = hiltViewModel<MainViewModel>()
+            MainScreen(navController = navController, mainViewModel)
         }
     }
 }
