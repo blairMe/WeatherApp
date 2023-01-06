@@ -6,8 +6,7 @@ import androidx.navigation.NavController
 
 @Composable
 fun MainScreen(navController: NavController, mainViewModel: MainViewModel) {
-
-
+    ShowData()
 }
 
 @Composable
