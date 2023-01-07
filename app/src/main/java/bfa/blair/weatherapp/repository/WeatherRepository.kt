@@ -1,5 +1,6 @@
 package bfa.blair.weatherapp.repository
 
+import android.util.Log
 import bfa.blair.weatherapp.data.DataOrException
 import bfa.blair.weatherapp.model.Weather
 import bfa.blair.weatherapp.network.WeatherApi
@@ -13,6 +14,7 @@ class WeatherRepository @Inject constructor(private val api : WeatherApi) {
         } catch (e : Exception) {
             return DataOrException(e = e)
         }
+        Log.d("INSIDE", "getWeather: $response")
         return DataOrException(data = response)
     }
 }
