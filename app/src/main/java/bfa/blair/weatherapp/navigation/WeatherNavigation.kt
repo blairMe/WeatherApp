@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import bfa.blair.weatherapp.screens.WeatherSplashScreen
 import bfa.blair.weatherapp.screens.main.MainScreen
 import bfa.blair.weatherapp.screens.main.MainViewModel
+import bfa.blair.weatherapp.screens.search.SearchScreen
 
 @Composable
 fun WeatherNavigation() {
@@ -20,6 +21,9 @@ fun WeatherNavigation() {
         composable(WeatherScreens.MainScreen.name) {
             val mainViewModel = hiltViewModel<MainViewModel>()
             MainScreen(navController = navController, mainViewModel)
+        }
+        composable(WeatherScreens.SearchScreen.name) {
+            SearchScreen(navController = navController)
         }
     }
 }

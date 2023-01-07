@@ -18,19 +18,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import bfa.blair.weatherapp.R
 import bfa.blair.weatherapp.data.DataOrException
 import bfa.blair.weatherapp.model.Weather
 import bfa.blair.weatherapp.model.WeatherItem
+import bfa.blair.weatherapp.navigation.WeatherScreens
 import bfa.blair.weatherapp.utils.formatDate
 import bfa.blair.weatherapp.utils.formatDateTime
 import bfa.blair.weatherapp.utils.formatDecimals
-import bfa.blair.weatherapp.widgets.WeatherAppBar
+import bfa.blair.weatherapp.widgets.*
 import coil.compose.rememberImagePainter
 import kotlin.text.Typography
 
@@ -55,7 +59,10 @@ fun MainScaffold(weather: Weather, navController: NavController) {
     Scaffold(topBar = {
         WeatherAppBar(title = weather.city.name + ", ${weather.city.country}",
             navController = navController,
-            elevation = 5.dp) {
+            onAddActionClicked = {
+                navController.navigate(WeatherScreens.SearchScreen.name)
+            },
+            elevation = 1.dp) {
             Log.d("Clicked", "Button Clicked")
         }
     }) {
@@ -118,100 +125,3 @@ fun MainContent(data : Weather) {
     }
 }
 
-@Composable
-fun WeatherStateImg(imageUrl : String) {
-    Image(painter = rememberImagePainter(imageUrl),
-        contentDescription = "icon image",
-        modifier = Modifier.size(80.dp))
-}
-
-@Composable
-fun HumidityWindPressureRow(weather : WeatherItem) {
-    Row(modifier = Modifier
-        .padding(12.dp)
-        .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween) {
-
-        Row(modifier = Modifier.padding(4.dp)) {
-            Icon(painter = painterResource(id = R.drawable.humidity),
-                contentDescription = "humidity icon",
-                modifier = Modifier.size(20.dp))
-            Text(text = "${weather.humidity}%",
-                style = MaterialTheme.typography.caption)
-        }
-
-        Row(modifier = Modifier.padding(4.dp)) {
-            Icon(painter = painterResource(id = R.drawable.pressure),
-                contentDescription = "pressure icon",
-                modifier = Modifier.size(20.dp))
-            Text(text = "${weather.pressure} psi",
-                style = MaterialTheme.typography.caption)
-        }
-
-        Row(modifier = Modifier.padding(4.dp)) {
-            Icon(painter = painterResource(id = R.drawable.wind),
-                contentDescription = "wind icon",
-                modifier = Modifier.size(20.dp))
-            Text(text = "${weather.speed} mph",
-                style = MaterialTheme.typography.caption)
-        }
-
-    }
-}
-
-@Composable
-fun SunsetSunriseRow(weather: WeatherItem) {
-    Row(modifier = Modifier
-        .padding(4.dp)
-        .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly) {
-        Row(modifier = Modifier.padding(4.dp)) {
-            Icon(painter = painterResource(id = R.drawable.sunrise),
-                contentDescription = "sunrise",
-                modifier = Modifier.size(30.dp))
-            Text(text = formatDateTime(weather.sunrise))
-        }
-
-        Row(modifier = Modifier.padding(top = 15.dp, bottom = 6.dp)) {
-            Text(text = formatDateTime(weather.sunset))
-            Icon(painter = painterResource(id = R.drawable.sunrise),
-                contentDescription = "sunset",
-                modifier = Modifier.size(30.dp))
-        }
-
-    }
-}
-
-@Composable
-fun WeatherDetailRow(weather : WeatherItem) {
-    val imageUrl = "https://openweathermap.org/img/wn/${weather.weather[0].icon}.png"
-    
-    Surface(modifier = Modifier
-        .padding(3.dp)
-        .fillMaxWidth(),
-        shape = CircleShape.copy(topEnd = CornerSize(6.dp)),
-        color = Color.White) {
-        
-        Row(modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween) {
-
-            Text(text = formatDate(weather.dt).split(",")[0],
-                modifier = Modifier.padding(5.dp))
-            
-            WeatherStateImg(imageUrl = imageUrl)
-            
-            Surface(
-                modifier = Modifier.padding(0.dp),
-                shape = CircleShape,
-                color = Color(0xFFFFC400)
-            ) {
-
-            }
-        }
-
-    }
-
-}
