@@ -2,9 +2,11 @@ package bfa.blair.weatherapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import bfa.blair.weatherapp.screens.WeatherSplashScreen
 import bfa.blair.weatherapp.screens.main.MainScreen
 import bfa.blair.weatherapp.screens.main.MainViewModel
@@ -18,9 +20,18 @@ fun WeatherNavigation() {
         composable(WeatherScreens.SplashScreen.name) {
             WeatherSplashScreen(navController = navController)
         }
-        composable(WeatherScreens.MainScreen.name) {
-            val mainViewModel = hiltViewModel<MainViewModel>()
-            MainScreen(navController = navController, mainViewModel)
+
+        val route = WeatherScreens.MainScreen.name
+        composable("$route/{city}",
+            arguments = listOf(
+                navArgument(name = "city") {
+                    type = NavType.StringType
+                })) { navBack ->
+                    navBack.arguments?.getString("city").let{ city ->
+                        val mainViewModel = hiltViewModel<MainViewModel>()
+                        MainScreen(navController = navController, mainViewModel, city = city)
+                    }
+
         }
         composable(WeatherScreens.SearchScreen.name) {
             SearchScreen(navController = navController)
