@@ -7,10 +7,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import bfa.blair.weatherapp.model.Weather
 import bfa.blair.weatherapp.screens.WeatherSplashScreen
+import bfa.blair.weatherapp.screens.about.AboutScreen
+import bfa.blair.weatherapp.screens.favorite.FavoriteScreen
 import bfa.blair.weatherapp.screens.main.MainScreen
 import bfa.blair.weatherapp.screens.main.MainViewModel
 import bfa.blair.weatherapp.screens.search.SearchScreen
+import bfa.blair.weatherapp.screens.settings.SettingsScreen
 
 @Composable
 fun WeatherNavigation() {
@@ -35,6 +39,15 @@ fun WeatherNavigation() {
         }
         composable(WeatherScreens.SearchScreen.name) {
             SearchScreen(navController = navController)
+        }
+        composable(WeatherScreens.AboutScreen.name) {
+            AboutScreen(navController = navController)
+        }
+        composable(WeatherScreens.FavoritesScreen.name) {
+            FavoriteScreen(navController = navController)
+        }
+        composable(WeatherScreens.SettingsScreen.name) {
+            SettingsScreen(navController = navController)
         }
     }
 }

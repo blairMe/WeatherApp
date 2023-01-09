@@ -83,7 +83,7 @@ fun SunsetSunriseRow(weather: WeatherItem) {
 
         Row(modifier = Modifier.padding(top = 15.dp, bottom = 6.dp)) {
             Text(text = formatDateTime(weather.sunset))
-            Icon(painter = painterResource(id = R.drawable.sunrise),
+            Icon(painter = painterResource(id = R.drawable.sunset),
                 contentDescription = "sunset",
                 modifier = Modifier.size(30.dp))
         }
