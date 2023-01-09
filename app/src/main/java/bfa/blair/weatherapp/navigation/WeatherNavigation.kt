@@ -7,7 +7,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import bfa.blair.weatherapp.model.Weather
 import bfa.blair.weatherapp.screens.WeatherSplashScreen
 import bfa.blair.weatherapp.screens.about.AboutScreen
 import bfa.blair.weatherapp.screens.favorite.FavoriteScreen

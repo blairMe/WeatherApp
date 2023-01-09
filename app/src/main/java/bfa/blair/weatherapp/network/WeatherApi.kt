@@ -1,6 +1,6 @@
 package bfa.blair.weatherapp.network
 
-import bfa.blair.weatherapp.model.Weather
+import bfa.blair.weatherapp.model.api.Weather
 import bfa.blair.weatherapp.utils.Constants
 import retrofit2.http.GET
 import retrofit2.http.Query

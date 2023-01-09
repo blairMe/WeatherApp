@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import bfa.blair.weatherapp.R
-import bfa.blair.weatherapp.model.WeatherItem
+import bfa.blair.weatherapp.model.api.WeatherItem
 import bfa.blair.weatherapp.utils.formatDate
 import bfa.blair.weatherapp.utils.formatDateTime
 import bfa.blair.weatherapp.utils.formatDecimals

@@ -2,7 +2,7 @@ package bfa.blair.weatherapp.repository
 
 import android.util.Log
 import bfa.blair.weatherapp.data.DataOrException
-import bfa.blair.weatherapp.model.Weather
+import bfa.blair.weatherapp.model.api.Weather
 import bfa.blair.weatherapp.network.WeatherApi
 import javax.inject.Inject
 

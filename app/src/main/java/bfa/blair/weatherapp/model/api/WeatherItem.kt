@@ -1,4 +1,4 @@
-package bfa.blair.weatherapp.model
+package bfa.blair.weatherapp.model.api
 
 data class WeatherItem (
     val clouds: Int,

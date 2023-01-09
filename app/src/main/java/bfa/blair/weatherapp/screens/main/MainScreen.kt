@@ -17,8 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import bfa.blair.weatherapp.data.DataOrException
-import bfa.blair.weatherapp.model.Weather
-import bfa.blair.weatherapp.model.WeatherItem
+import bfa.blair.weatherapp.model.api.Weather
+import bfa.blair.weatherapp.model.api.WeatherItem
 import bfa.blair.weatherapp.navigation.WeatherScreens
 import bfa.blair.weatherapp.utils.formatDate
 import bfa.blair.weatherapp.utils.formatDecimals
@@ -35,7 +35,14 @@ fun MainScreen(navController: NavController, mainViewModel: MainViewModel, city:
     }.value
 
     if(weatherData.loading == true) {
-        CircularProgressIndicator()
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center) {
+            CircularProgressIndicator()
+        }
+
     } else if (weatherData.data != null){
         // Text(text = "MainScreen ${weatherData.value.data}")
         MainScaffold(weather = weatherData.data!!, navController)

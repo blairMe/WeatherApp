@@ -1,4 +1,4 @@
-package bfa.blair.weatherapp.model
+package bfa.blair.weatherapp.model.api
 
 data class Coord(
     val lat: Double,
