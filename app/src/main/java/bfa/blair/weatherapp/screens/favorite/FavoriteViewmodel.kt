@@ -5,12 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import bfa.blair.weatherapp.model.room.Favorite
 import bfa.blair.weatherapp.repository.WeatherDbRepository
-import bfa.blair.weatherapp.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,7 +28,7 @@ class FavoriteViewmodel @Inject constructor(private val repository: WeatherDbRep
                             Log.d("List of Favs", ": Empty")
                         } else {
                             _favlist.value = listOfFavs
-                            Log.d("List of Favs", ": ${_favlist.value}")
+                            Log.d("List of Favs", ": ${favlist.value}")
                         }
                     }
             }
