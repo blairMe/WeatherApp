@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import bfa.blair.weatherapp.data.DataOrException
 import bfa.blair.weatherapp.model.api.Weather
@@ -25,10 +26,12 @@ import bfa.blair.weatherapp.utils.formatDecimals
 import bfa.blair.weatherapp.widgets.*
 
 @Composable
-fun MainScreen(navController: NavController,
-               mainViewModel: MainViewModel,
-               settingsViewModel: SettingsViewModel,
-               city: String?) {
+fun MainScreen(
+    navController: NavController,
+    mainViewModel: MainViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel = hiltViewModel(),
+    city: String?,
+) {
 
     val curCity : String = if(city!!.isBlank()) "Nairobi" else city
     val unitFromDb = settingsViewModel.unitList.collectAsState().value
