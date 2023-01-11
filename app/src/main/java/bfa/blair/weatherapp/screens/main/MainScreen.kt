@@ -7,8 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,37 +19,55 @@ import bfa.blair.weatherapp.data.DataOrException
 import bfa.blair.weatherapp.model.api.Weather
 import bfa.blair.weatherapp.model.api.WeatherItem
 import bfa.blair.weatherapp.navigation.WeatherScreens
+import bfa.blair.weatherapp.screens.settings.SettingsViewModel
 import bfa.blair.weatherapp.utils.formatDate
 import bfa.blair.weatherapp.utils.formatDecimals
 import bfa.blair.weatherapp.widgets.*
 
 @Composable
-fun MainScreen(navController: NavController, mainViewModel: MainViewModel, city: String?) {
+fun MainScreen(navController: NavController,
+               mainViewModel: MainViewModel,
+               settingsViewModel: SettingsViewModel,
+               city: String?) {
+
+    val curCity : String = if(city!!.isBlank()) "Nairobi" else city
+    val unitFromDb = settingsViewModel.unitList.collectAsState().value
+    var unit by remember {
+        mutableStateOf("imperial")
+    }
+    var isImperial by remember {
+        mutableStateOf(false)
+    }
+    if(!unitFromDb.isNullOrEmpty()) {
+        unit = unitFromDb[0].unit.split(" ")[0].lowercase()
+        isImperial = unit == "imperial"
+
+        val weatherData = produceState<DataOrException<Weather, Boolean, Exception>>(
+            initialValue = DataOrException(loading = true)) {
+            value = mainViewModel.getWeatherData(city = curCity, units = unit)
+        }.value
+
+        if(weatherData.loading == true) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center) {
+                CircularProgressIndicator()
+            }
+
+        } else if (weatherData.data != null){
+            // Text(text = "MainScreen ${weatherData.value.data}")
+            MainScaffold(weather = weatherData.data!!, navController, isImperial = isImperial)
+        }
+    }
 
     Log.d("Cityname", "$city")
 
-    val weatherData = produceState<DataOrException<Weather, Boolean, Exception>>(
-        initialValue = DataOrException(loading = true)) {
-        value = mainViewModel.getWeatherData(city = city.toString())
-    }.value
-
-    if(weatherData.loading == true) {
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center) {
-            CircularProgressIndicator()
-        }
-
-    } else if (weatherData.data != null){
-        // Text(text = "MainScreen ${weatherData.value.data}")
-        MainScaffold(weather = weatherData.data!!, navController)
-    }
 }
 
 @Composable
-fun MainScaffold(weather: Weather, navController: NavController) {
+fun MainScaffold(weather: Weather, navController: NavController, isImperial: Boolean) {
     Scaffold(topBar = {
         WeatherAppBar(title = weather.city.name + ", ${weather.city.country}",
             navController = navController,
@@ -61,20 +78,21 @@ fun MainScaffold(weather: Weather, navController: NavController) {
             Log.d("Clicked", "Button Clicked")
         }
     }) {
-        MainContent(data = weather)
+        MainContent(data = weather, isImperial = isImperial)
     }
 
 }
 
 @Composable
-fun MainContent(data : Weather) {
+fun MainContent(data: Weather, isImperial: Boolean) {
 
     val weatherItem = data.list[0]
     val imageUrl = "https://openweathermap.org/img/wn/${weatherItem.weather[0].icon}.png"
 
-    Column(Modifier
-        .padding(4.dp)
-        .fillMaxWidth(),
+    Column(
+        Modifier
+            .padding(4.dp)
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center) {
 
@@ -98,7 +116,7 @@ fun MainContent(data : Weather) {
             }
         }
 
-        HumidityWindPressureRow(weather = weatherItem)
+        HumidityWindPressureRow(weather = weatherItem, isImperial = isImperial)
         Divider()
         SunsetSunriseRow(weather = weatherItem)
         Text(text = "This Week",

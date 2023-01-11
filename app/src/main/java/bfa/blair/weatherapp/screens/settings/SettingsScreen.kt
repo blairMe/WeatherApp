@@ -40,7 +40,9 @@ fun SettingsScreen(
             icon = Icons.Default.ArrowBack,
             isMainScreen = false,
             navController = navController
-        )
+        ) {
+            navController.popBackStack()
+        }
     }) {
         Surface(modifier = Modifier
             .fillMaxWidth()
